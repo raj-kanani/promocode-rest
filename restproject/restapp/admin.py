@@ -15,4 +15,4 @@ class CouponAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['coupon', 'order_amount', 'total_amount', 'owner']
+    list_display = ['code', 'order_amount', 'total_amount', 'user']

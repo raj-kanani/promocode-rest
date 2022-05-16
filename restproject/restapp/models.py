@@ -32,13 +32,14 @@ class Coupon(models.Model):
 
     start_date = models.DateField()
     end_date = models.DateField(validators=[validate_date])
-    discount = models.IntegerField(default=None, validators=[MaxValueValidator(100)])
+    # help_text : field in suggestion message provide
+    discount = models.IntegerField(help_text='enter discount under 100', default=None, validators=[MaxValueValidator(100)])
 
     TYPE_CHOICES = [('Flat', 'Flat'),
                     ('Percentage', 'Percentage')]
 
     discount_type = models.CharField(choices=TYPE_CHOICES, default='Flat', max_length=10)
-    max_coupon = models.IntegerField(null=True)
+    max_coupon = models.IntegerField(null=True, default=1)
     user_limit = models.IntegerField(null=True)
     owner = models.ForeignKey(Userprofile, related_name='user', on_delete=models.CASCADE, null=True)
 
@@ -56,7 +57,7 @@ class Coupon(models.Model):
 
 
 class Order(models.Model):
-    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, related_name='coupon_related')
+    code = models.ForeignKey(Coupon, on_delete=models.CASCADE, related_name='coupon_related')
     order_amount = models.IntegerField(validators=[MinValueValidator(100), MaxValueValidator(1500000)])
     total_amount = models.IntegerField(null=True)
-    owner = models.ForeignKey(Userprofile, on_delete=models.CASCADE, related_name='user_related', null=True)
+    user = models.ForeignKey(Userprofile, on_delete=models.CASCADE, related_name='user_related', null=True)
